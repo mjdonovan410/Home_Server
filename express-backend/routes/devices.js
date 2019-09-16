@@ -20,7 +20,16 @@ router.get('/devices', function(req, res, next) {
 });
 
 router.post('/devices', function(req, res, next) {
-    res.send('API is working properly');
+    fs.writeFile('public/files/devices.json', JSON.stringify(req.body), function(err) {
+        if(err === null){
+            console.log('Updated Settings') 
+            res.sendStatus(200)
+        }
+        else{
+            console.log(err);
+            res.sendStatus(500)
+        }
+    });
 });
 
 module.exports = router;

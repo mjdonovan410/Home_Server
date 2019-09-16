@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 
 function DeviceList() {
     let devices;
-
-    const [cnt, setCnt] = useState(0);
     const [data, setData] = useState(null);
 
     useEffect(()=>{
@@ -12,61 +10,95 @@ function DeviceList() {
         .then(setData);
     }, []);
 
-    const styles = {
-        showOnHomeStyle: {
-            backgroundSize: '24px',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-            cursor: 'pointer'
-        }
-    };
+    if (data === null) return null;
+    
+    data.sort(function(a, b) {
+        return a.order - b.order;
+    });
+    console.log("SORTED")
 
-    let genTable = (device, count) => {
+    let genTable = (device) => {
         return (
             <div
                 className="devListCont"
-                style={count % 2 === 1 ? { backgroundColor: '#eee' } : {}}
                 key={device.id}
             >
                 <p className="devListRow">{device.id}</p>
                 <p className="devListRow">{device.name}</p>
                 <p className="devListRow">{device.deviceType}</p>
                 <p className="devListRow">{device.ipAddress}</p>
-                <div
-                    onClick={() => clickHandler(device.id)}
-                    align="center"
-                    style={{
-                        ...styles.showOnHomeStyle,
-                        ...{
-                            backgroundImage: device.showOnHome
-                                ? 'url("./images/show.png")'
-                                : 'url("./images/hide.png")'
-                        }
-                    }}
-                ></div>
+                <img src={(device.showOnHome) ? "./images/show.png" : "./images/hide.png"} height="20px" onClick={() => showHandler(device.order)} className="devListRow"/>
+                <div className="devListRow" style={{'height':'20px'}}>
+                    <img src="./images/upArrow.png" height="20px" onClick={() => orderHandler(device.order, 'up')}/>
+                    <img src="./images/downArrow.png" height="20px" onClick={() => orderHandler(device.order, 'down')}/>
+                </div>
+                <img src="./images/close.png" height="16px" onClick={() => deleteHandler(device.order)} className="devListRow"/>
             </div>
         );
     };
 
-    // Updates the settings in localForage and forces component refresh
-    function clickHandler(id) {
-        devices = data.map((device, count = 0) => {
-            if (device.id === id) {
-                device.showOnHome = !device.showOnHome;
-                console.log('CHANGE');
-            }
-            count += 1;
-            return genTable(device, count);
+    // Sends the updated settings to the server
+    function updateServerJSON(){
+        fetch('http://localhost:9000/devices', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
         });
-        setCnt(cnt + 1);
     }
 
-    if (data === null) return null;
+    // Updates the settings in localForage and forces component refresh
+    function showHandler(order) {
+        let newData = data.slice();
+        newData[order-1].showOnHome = !newData[order-1].showOnHome;
+        
+        devices = newData.map((device) => {
+            return genTable(device);
+        });
 
-    // sorts by the user's selected order
-    data.sort(function(a, b) {
-        return a.order - b.order;
-    });
+        setData(newData);
+        updateServerJSON();
+    }
+
+    function deleteHandler(order) {
+        let newData = [];
+        
+        // Removes the item by pushing everything up by 1 in the order and not putting it back in to the array
+        devices = data.map((device) => {
+            if(device.order !== order){
+                if(device.order > order)
+                    device.order -= 1;
+                newData.push(device);
+                return genTable(device);
+            }
+            
+            return null
+        });
+
+        setData(newData);
+        updateServerJSON();
+    }
+
+    function orderHandler(order, direction) {
+        let newData = data.slice();
+        if(direction === 'up' && order > 1){
+            newData[order-1].order -= 1;
+            newData[order-2].order += 1;
+        }
+        else if(direction === 'down' && order < Object.keys(newData).length){
+            newData[order-1].order += 1;
+            newData[order].order -= 1;
+        }
+        
+        devices = newData.map((device) => {
+            return genTable(device);
+        });
+
+        setData(newData);
+        updateServerJSON()
+    }
 
     devices = data.map(genTable);
 
@@ -81,6 +113,8 @@ function DeviceList() {
                 <p className="devListRow">Device Type</p>
                 <p className="devListRow">IP Address</p>
                 <p className="devListRow">Show</p>
+                <p className="devListRow">Order</p>
+                <p className="devListRow"></p>
             </div>
             {devices}
         </div>
