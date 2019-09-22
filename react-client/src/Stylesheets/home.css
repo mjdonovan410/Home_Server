@@ -1,0 +1,58 @@
+.homeCont{
+    width: 620px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    justify-items: stretch;
+}
+
+.widgetCont{
+    height: 100px;
+    padding: 5px;
+    margin: 5px;
+    border: 1px solid #20232A;
+    align-self: center stretch;
+    justify-self: center stretch;
+    display: grid;
+}
+
+.tempWidgetCircle{
+    height: 90px;
+    width: 90px;
+    border-radius: 50%;
+    align-self: center;
+    justify-self: left;
+    margin-left: 5px;
+    display: grid;
+    position: relative;
+    background-image: radial-gradient(hsla(50,100%,50%,20%) 10%, hsla(50,100%,50%,100%) 90%);
+}
+
+.tempNum{
+    align-self: center;
+    justify-self: center;
+    font-size: 48px;
+    margin: 0;
+    font-family: Marvel;
+}
+
+.tempRainDrop{
+    position: absolute;
+    bottom: -10px;
+    right: -10px;
+    display: grid;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+.tempRainDrop p{
+    align-self: center;
+    justify-self: center;
+    font-size: 24px;
+    margin: 0;
+    margin-top: 10px;
+    color: white;
+    font-family: Marvel;
+}

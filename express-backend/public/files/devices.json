@@ -1,1 +1,1 @@
-[{"id":2,"name":"Kitchen Temp","deviceType":"Temp","ipAddress":"192.168.1.51","showOnHome":true,"order":1}]
+[{"id":2,"name":"Kitchen Temp","deviceType":"Temperature","ipAddress":"10.0.0.50","showOnHome":true,"order":1},{"id":5,"name":"Feet Temp","deviceType":"Temperature","ipAddress":"10.0.0.50","showOnHome":true,"order":2},{"id":8,"name":"Upstairs Temp","deviceType":"Temperature","ipAddress":"10.0.0.50","showOnHome":true,"order":3}]
