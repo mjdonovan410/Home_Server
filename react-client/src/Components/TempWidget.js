@@ -11,6 +11,8 @@ function TempWidget(props) {
                     <p>{props.tempSensor.humid}</p>
                 </div>
             </div>
+            <p>{ props.tempSensor.name }</p>
+            <p>{ props.tempSensor.ipAddress }</p>
         </div>
     );
 }
