@@ -1,18 +1,55 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import fetch from "../fetchWithTimeout"
 
 function TempWidget(props) {
-    console.log(props.tempSensor)
+    const [deviceData, setData] = useState({"name":props.sensor.name, "temp":"#", "humid":"", "ipAddress":props.sensor.ipAddress});
+    const [loadFault, setLoadFault] = useState(false);
+    const [lastUpdate, setUpdate] = useState("");
+
+    function getTime(){
+        var today = new Date();
+        return ((today.getHours() < 10)?"0":"") + today.getHours() +":"+ ((today.getMinutes() < 10)?"0":"") + today.getMinutes() +":"+ ((today.getSeconds() < 10)?"0":"") + today.getSeconds();
+    }
+
+    function grabDeviceData(){
+        setLoadFault(false)
+        fetch("http://"+props.sensor.ipAddress+"/json", null, 5000)
+        .then(res => res.json())
+        .then(resJSON => {
+            setData(resJSON);
+            setUpdate(getTime());
+        })
+        .catch(err => {
+            console.log(err)
+            setUpdate(getTime());
+            setLoadFault(true);
+            setData({"name":props.sensor.name, "temp":"#", "humid":"#", "ipAddress":props.sensor.ipAddress})
+        })
+    }
+
+    useEffect(() => {
+        grabDeviceData();
+        setInterval(grabDeviceData, 300000)
+    },[]);
+    //console.log(props.tempSensor)
 
     return (
         <div className='widgetCont'>
             <div className='tempWidgetCircle'>
-                <p className='tempNum'>{props.tempSensor.temp}</p>
+                {
+                    (loadFault || deviceData.temp !== "#") ? 
+                    <p className='tempNum'>{deviceData.temp}</p> 
+                    : <img src="./images/loading.gif" width="80px" className="tempLoading"/> 
+                }
                 <div className='tempRainDrop' style={{backgroundImage:"url('./images/raindrop.png')", height:'50px', width:'35px'}}>
-                    <p>{props.tempSensor.humid}</p>
+                    <p>{deviceData.humid}</p>
                 </div>
             </div>
-            <p>{ props.tempSensor.name }</p>
-            <p>{ props.tempSensor.ipAddress }</p>
+            <div className="tempDetails">
+                <p style={{fontSize:"24px", fontWeight:"bold"}}>{ deviceData.name }</p>
+                <p style={{fontSize:"18px"}}>{ deviceData.ipAddress }</p>
+            </div>
+            <p className="tempUpdated">Last Updated: { lastUpdate }</p>
         </div>
     );
 }

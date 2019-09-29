@@ -7,23 +7,13 @@ function Home(props) {
     useEffect(()=>{
         let deviceList = props.deviceList.slice();
         let promises = deviceList.map(device => {
-            return fetch("http://" + device.ipAddress + "/json")
-                .then(res => res.json())
-                .then(resJSON => {
-                    //console.log(resJSON)
-                    if(device.deviceType === "Temperature"){
-                        device['temp'] = resJSON.temperature;
-                        device['humid'] = resJSON.humidity;
-                        return <TempWidget tempSensor={device} key={device.id}/>;
-                    }
-                });
+            if(device.deviceType === "Temperature")
+                return <TempWidget sensor={device} key={device.id}/>;
+            else   
+                return <div></div>
         })
-        Promise.all(promises).then(function(devices){
-            setData(devices);
-        });
-    }, []);
-    
-    
+        Promise.all(promises).then(setData);
+    }, []);    
     
     return (
         <div className='homeCont'>

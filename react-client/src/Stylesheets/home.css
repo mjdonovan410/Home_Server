@@ -12,9 +12,11 @@
     padding: 5px;
     margin: 5px;
     border: 1px solid #20232A;
-    align-self: center stretch;
-    justify-self: center stretch;
+    place-self: center stretch;
     display: grid;
+    grid-template-columns: 3fr 5fr;
+    position: relative;
+    font-family: Marvel;
 }
 
 .tempWidgetCircle{
@@ -24,22 +26,21 @@
     align-self: center;
     justify-self: left;
     margin-left: 5px;
+    color: #20232A;
     display: grid;
     position: relative;
     background-image: radial-gradient(hsla(50,100%,50%,20%) 10%, hsla(50,100%,50%,100%) 90%);
 }
 
 .tempNum{
-    align-self: center;
-    justify-self: center;
+    place-self: center;
     font-size: 48px;
     margin: 0;
-    font-family: Marvel;
 }
 
 .tempRainDrop{
     position: absolute;
-    bottom: -10px;
+    bottom: -8px;
     right: -10px;
     display: grid;
     background-repeat: no-repeat;
@@ -48,11 +49,30 @@
 }
 
 .tempRainDrop p{
-    align-self: center;
-    justify-self: center;
+    place-self: center;
     font-size: 24px;
-    margin: 0;
-    margin-top: 10px;
+    margin: 10px auto 0px auto; 
     color: white;
-    font-family: Marvel;
+}
+
+.tempDetails{
+    color: #20232A;
+    display: grid;
+}
+
+.tempDetails p{
+    margin: 0px;
+    place-self: center;
+}
+
+.tempLoading{
+    place-self: center;
+}
+
+.tempUpdated{
+    position: absolute;
+    font-size: 12px;
+    bottom: 0px;
+    right: 0px;
+    margin: 0px;
 }
