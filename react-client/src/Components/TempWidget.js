@@ -1,22 +1,33 @@
 import React, {useEffect, useState} from 'react';
 import fetch from "../fetchWithTimeout"
+import ModalTemplate from "./ModalTemplate"
 
 function TempWidget(props) {
     const [deviceData, setData] = useState({"name":props.sensor.name, "temp":"#", "humid":"", "ipAddress":props.sensor.ipAddress});
     const [loadFault, setLoadFault] = useState(false);
     const [lastUpdate, setUpdate] = useState("");
+    const [tempModal, setModal] = useState(false);
 
     function getTime(){
         var today = new Date();
         return ((today.getHours() < 10)?"0":"") + today.getHours() +":"+ ((today.getMinutes() < 10)?"0":"") + today.getMinutes() +":"+ ((today.getSeconds() < 10)?"0":"") + today.getSeconds();
     }
 
+    function loadModal(){
+        setModal(true)
+    }
+
+    function deleteModal(){
+        console.log(tempModal)
+        setModal(false)
+    }
+    
     function grabDeviceData(){
         setLoadFault(false)
         fetch("http://"+props.sensor.ipAddress+"/json", null, 5000)
         .then(res => res.json())
         .then(resJSON => {
-            setData(resJSON);
+            setData({"name":props.sensor.name, "temp":resJSON.temperature, "humid":resJSON.humidity, "ipAddress":props.sensor.ipAddress})
             setUpdate(getTime());
         })
         .catch(err => {
@@ -31,10 +42,10 @@ function TempWidget(props) {
         grabDeviceData();
         setInterval(grabDeviceData, 300000)
     },[]);
-    //console.log(props.tempSensor)
 
     return (
-        <div className='widgetCont'>
+        <div className='widgetCont' onClick={loadModal}>
+            {(tempModal) ? <ModalTemplate deleteModal={deleteModal}/> : null}
             <div className='tempWidgetCircle'>
                 {
                     (loadFault || deviceData.temp !== "#") ? 

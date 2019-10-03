@@ -9,7 +9,7 @@ function App() {
   const [data, setData] = useState(null);
   
   useEffect(()=>{
-    fetch('http://localhost:9000/devices')
+    fetch('http://'+window.location.hostname+':9000/devices')
     .then(res => res.json())
     .then(setData);
   }, []);

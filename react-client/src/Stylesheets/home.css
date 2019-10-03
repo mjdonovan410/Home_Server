@@ -1,5 +1,5 @@
 .homeCont{
-    width: 620px;
+    width: 600px;
     margin: auto;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -17,6 +17,7 @@
     grid-template-columns: 3fr 5fr;
     position: relative;
     font-family: Marvel;
+    cursor: pointer;
 }
 
 .tempWidgetCircle{
@@ -72,7 +73,7 @@
 .tempUpdated{
     position: absolute;
     font-size: 12px;
-    bottom: 0px;
-    right: 0px;
+    bottom: 1px;
+    right: 3px;
     margin: 0px;
 }
