@@ -18,8 +18,12 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <NavBar />
-        <Route exact path='/'>{(data !== null) ? <Home deviceList={data}/> : null}</Route>
-        <Route path='/devices'>{(data !== null) ? <DeviceTable deviceList={data}/> : null}</Route>
+        <Route exact path='/' render={() =>
+          (data !== null) && <Home deviceList={data}/>
+        } />
+        <Route path='/devices' render={() =>
+          (data !== null) && <DeviceTable deviceList={data}/>
+        } />
       </div>
     </BrowserRouter>
   );

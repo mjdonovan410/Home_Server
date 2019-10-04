@@ -23,6 +23,7 @@ function TempWidget(props) {
     
     function grabDeviceData(){
         setLoadFault(false)
+        console.log(props.sensor.ipAddress)
         fetch("http://"+props.sensor.ipAddress+"/json", null, 5000)
         .then(res => res.json())
         .then(resJSON => {
