@@ -6,13 +6,15 @@ function Home(props) {
   
     useEffect(()=>{
         let deviceList = props.deviceList.slice();
-        let promises = deviceList.map(device => {
-            if(device.deviceType === "Temperature")
-                return <TempWidget sensor={device} key={device.id}/>;
-            else   
-                return <div></div>
+        let devices = deviceList.map(device => {
+            if(device.showOnHome){
+                if(device.deviceType === "Temperature")
+                    return <TempWidget sensor={device} key={device.id}/>;
+                else   
+                    return <div></div>
+            }
         })
-        Promise.all(promises).then(setData);
+        setData(devices)
     }, []);    
     
     return (
