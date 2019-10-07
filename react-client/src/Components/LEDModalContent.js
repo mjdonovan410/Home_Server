@@ -19,9 +19,9 @@ function LEDModalContent() {
                 <div id='square' style={{"backgroundColor":sqColor}}>
                     <span id='rgbHex'>{sqColor}</span>
                 </div>
-                <input type='range' id='red' min='0' max='256' step='16' onChange={sliderMoved} className='slider redSlider'></input>
-                <input type='range' id='green' min='0' max='256' step='16' onChange={sliderMoved} className='slider greenSlider'></input>
-                <input type='range' id='blue' min='0' max='256' step='16' onChange={sliderMoved} className='slider blueSlider'></input>
+                <input type='range' defaultValue="128" id='red' min='0' max='256' step='16' onChange={sliderMoved} className='slider redSlider'></input>
+                <input type='range' defaultValue="128" id='green' min='0' max='256' step='16' onChange={sliderMoved} className='slider greenSlider'></input>
+                <input type='range' defaultValue="128" id='blue' min='0' max='256' step='16' onChange={sliderMoved} className='slider blueSlider'></input>
                 
                 {/* <div id='submitButton' className='altButton' style='width:150px;'>SUBMIT</div> */}
             </div>
