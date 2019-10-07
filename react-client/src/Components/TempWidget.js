@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import fetch from "../fetchWithTimeout"
 import ModalTemplate from "./ModalTemplate"
+import TempModalContent from "./TempModalContent"
 
 function TempWidget(props) {
     const [deviceData, setData] = useState({"name":props.sensor.name, "temp":"#", "humid":"", "ipAddress":props.sensor.ipAddress});
@@ -45,7 +46,7 @@ function TempWidget(props) {
 
     return (
         <div>
-            {tempModal && <ModalTemplate deleteModal={deleteModal}/>}
+            {tempModal && <ModalTemplate deleteModal={deleteModal} content={<TempModalContent sensor={props.sensor}/>}/>}
             <div className='widgetCont' onClick={loadModal}>
                 <div className='tempWidgetCircle'>
                     {

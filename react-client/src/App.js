@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {BrowserRouter, Route} from 'react-router-dom'
-import DeviceTable from './Components/DeviceTable'
+import Devices from './Components/Devices'
 import Home from './Components/Home'
 import NavBar from './Components/NavBar'
 
@@ -22,7 +22,7 @@ function App() {
           (data !== null) && <Home deviceList={data}/>
         } />
         <Route path='/devices' render={() =>
-          (data !== null) && <DeviceTable deviceList={data}/>
+          (data !== null) && <Devices deviceList={data}/>
         } />
       </div>
     </BrowserRouter>

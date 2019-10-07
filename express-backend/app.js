@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
+var fs = require('fs');
 
 var indexRouter = require('./routes/index');
 var devicesRouter = require('./routes/devices');
@@ -39,5 +40,39 @@ app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error');
 });
+
+let today = new Date();
+let refreshRate = 5 //in minutes
+let nextDataGrab = (refreshRate - today.getMinutes()%refreshRate)*60000 - (today.getSeconds()*1000);
+//console.log(today.getMinutes()%refreshRate +":"+ today.getSeconds())
+//console.log("Next update in " + (refreshRate-(today.getMinutes()%refreshRate)-1) + ":"+ (60 - today.getSeconds()))
+//console.log(nextDataGrab)
+
+// Grabs data from each readOnly device (i.e. Temp Sensors)
+function grabDataFromDevices(){
+    fs.readFile('public/files/devices.json', function(err, data) {
+        if (err === null) {
+            let jsonData = JSON.parse(data);
+            jsonData.map(device => {
+                if(device.readOnly){
+                    console.log("Grabbing Data from "+device.ipAddress)
+                    //fetch("http://"+device.ipAddress+"/json")
+                    //.then()
+                }
+            })
+        } else {
+            console.log(err);
+        }
+    });
+}
+
+// Handles the irregular start time of the server.
+// Runs the data grab from devices every 5 mins (5 is default but might change to 10)
+setTimeout(()=>{
+    grabDataFromDevices()
+    setInterval(()=>{
+        grabDataFromDevices()
+    }, refreshRate*60000)
+}, nextDataGrab)
 
 module.exports = app;

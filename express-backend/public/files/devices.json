@@ -1,1 +1,1 @@
-[{"id":2,"name":"Upstairs Office","deviceType":"Temperature","ipAddress":"10.0.0.50","showOnHome":true,"order":1}]
+[{"id":2,"name":"Upstairs Office","deviceType":"Temperature","ipAddress":"10.0.0.50","readOnly":true,"showOnHome":true,"order":1},{"id":1,"name":"Downstairs","deviceType":"Temperature","ipAddress":"10.0.0.51","readOnly":true,"showOnHome":true,"order":2}]

@@ -11,7 +11,7 @@
     height: 100px;
     padding: 5px;
     margin: 5px;
-    border: 1px solid #20232A;
+    /* border: 1px solid #20232A; */
     place-self: center stretch;
     display: grid;
     grid-template-columns: 3fr 5fr;
@@ -30,7 +30,8 @@
     color: #20232A;
     display: grid;
     position: relative;
-    background-image: radial-gradient(hsla(50,100%,50%,20%) 10%, hsla(50,100%,50%,100%) 90%);
+    border: 5px solid hsl(50,100%,50%);
+    /* background-image: radial-gradient(hsla(50,100%,50%,20%) 10%, hsla(50,100%,50%,100%) 90%); */
 }
 
 .tempNum{

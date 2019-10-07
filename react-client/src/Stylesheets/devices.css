@@ -22,3 +22,20 @@
 .devListCont:hover{
     background-color: rgb(0, 195, 255, .35);
 }
+
+.altButton{
+    font-family: Marvel;
+    font-size: 20px;
+    text-align: center;
+    background-color: #20232A;
+    border-radius: 5px;
+    padding: 5px;
+    color: white;
+    cursor: pointer;
+    margin-top: 30px;
+    transition: color .25s;
+}
+
+.altButton:hover{
+    color: rgb(0, 195, 255);
+}
