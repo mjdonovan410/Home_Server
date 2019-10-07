@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import DeviceTable from "./DeviceTable"
 import ModalTemplate from "./ModalTemplate"
+import LEDModalContent from "./LEDModalContent"
 
 function Devices(props) {
     const [data, setData] = useState(null);
@@ -22,7 +23,7 @@ function Devices(props) {
         <div align="center">
             {(data!=null) && <DeviceTable deviceList={data}/>}
             <span onClick={loadModal} className="altButton">Add Device</span>
-            {modal && <ModalTemplate deleteModal={deleteModal}/>}
+            {modal && <ModalTemplate deleteModal={deleteModal} content={<LEDModalContent/>}/>}
         </div>
     );
 }
