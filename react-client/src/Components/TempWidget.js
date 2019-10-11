@@ -21,48 +21,22 @@ function TempWidget(props) {
     const deleteModal = () =>{
         setModal(false)
     }
-    
-    function grabDeviceData(){
-        setLoadFault(false)
-        console.log(props.sensor.ipAddress)
-        fetch("http://"+props.sensor.ipAddress+"/json", null, 5000)
-        .then(res => res.json())
-        .then(resJSON => {
-            setData({"name":props.sensor.name, "temp":resJSON.temperature, "humid":resJSON.humidity, "ipAddress":props.sensor.ipAddress})
-            setUpdate(getTime());
-        })
-        .catch(err => {
-            console.log(err)
-            setUpdate(getTime());
-            setLoadFault(true);
-            setData({"name":props.sensor.name, "temp":"#", "humid":"#", "ipAddress":props.sensor.ipAddress})
-        })
-    }
-
-    useEffect(() => {
-        grabDeviceData();
-        setInterval(grabDeviceData, 300000)
-    },[]);
 
     return (
         <div>
             {tempModal && <ModalTemplate deleteModal={deleteModal} content={<TempModalContent sensor={props.sensor}/>}/>}
             <div className='widgetCont' onClick={loadModal}>
                 <div className='tempWidgetCircle'>
-                    {
-                        (loadFault || deviceData.temp !== "#") ? 
-                        <p className='tempNum'>{deviceData.temp}</p> 
-                        : <img src="./images/loading.gif" width="80px" className="tempLoading"/> 
-                    }
+                    <p className='tempNum'>{props.sensor.temp}</p>
                     <div className='tempRainDrop' style={{backgroundImage:"url('./images/raindrop.png')", height:'50px', width:'35px'}}>
-                        <p>{deviceData.humid}</p>
+                        <p>{props.sensor.humid}</p>
                     </div>
                 </div>
                 <div className="tempDetails">
-                    <p style={{fontSize:"24px", fontWeight:"bold"}}>{ deviceData.name }</p>
-                    <p style={{fontSize:"18px"}}>{ deviceData.ipAddress }</p>
+                    <p style={{fontSize:"24px", fontWeight:"bold"}}>{ props.sensor.name }</p>
+                    <p style={{fontSize:"18px"}}>{ props.sensor.ipAddress }</p>
                 </div>
-                <p className="tempUpdated">Last Updated: { lastUpdate }</p>
+                <p className="tempUpdated">Last Updated: { props.sensor.updated }</p>
             </div>
         </div>
     );

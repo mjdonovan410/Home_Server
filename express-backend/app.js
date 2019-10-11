@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
 var fs = require('fs');
+let fetch = require('node-fetch');
 
 var indexRouter = require('./routes/index');
 var devicesRouter = require('./routes/devices');
@@ -41,6 +42,11 @@ app.use(function(err, req, res, next) {
     res.render('error');
 });
 
+function getTime(){
+    var today = new Date();
+    return ((today.getHours() < 10)?"0":"") + today.getHours() +":"+ ((today.getMinutes() < 10)?"0":"") + today.getMinutes() +":"+ ((today.getSeconds() < 10)?"0":"") + today.getSeconds();
+}
+
 let today = new Date();
 let refreshRate = 5 //in minutes
 let nextDataGrab = (refreshRate - today.getMinutes()%refreshRate)*60000 - (today.getSeconds()*1000);
@@ -53,12 +59,41 @@ function grabDataFromDevices(){
     fs.readFile('public/files/devices.json', function(err, data) {
         if (err === null) {
             let jsonData = JSON.parse(data);
-            jsonData.map(device => {
+            let deviceList = [];
+            let promises = jsonData.map(device => {
                 if(device.readOnly){
                     console.log("Grabbing Data from "+device.ipAddress)
-                    //fetch("http://"+device.ipAddress+"/json")
-                    //.then()
+                    return fetch("http://"+device.ipAddress+"/json")
+                    .then(res => res.json())
+                    .then(resJSON => {
+                        if(device.deviceType === "Temperature"){
+                            device.temp = resJSON.temperature;
+                            device.humid = resJSON.humidity;
+                            device.updated = getTime();
+                        }
+                        deviceList.push(device)
+                    })
+                    .catch(err => {
+                        console.log(err)
+                        if(device.deviceType === "Temperature"){
+                            device.temp = "#";
+                            device.humid = "#";
+                            device.updated = getTime();
+                        }
+                        
+                        deviceList.push(device)
+                    })
                 }
+                deviceList.push(device)
+            })
+            
+            Promise.all(promises).then(()=>{
+                fs.writeFile('public/files/devices.json', JSON.stringify(deviceList), function(err) {
+                    if(err=== null)
+                        console.log('Updated Settings') 
+                    else
+                        console.log(err);
+                })
             })
         } else {
             console.log(err);
