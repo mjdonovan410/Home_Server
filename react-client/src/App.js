@@ -13,6 +13,10 @@ function App() {
     .then(res => res.json())
     .then(setData);
   }, []);
+
+  function updateAppData(newData){
+    setData(newData);
+  }
   
   return (
     <BrowserRouter>
@@ -22,7 +26,7 @@ function App() {
           (data !== null) && <Home deviceList={data}/>
         } />
         <Route path='/devices' render={() =>
-          (data !== null) && <Devices deviceList={data}/>
+          (data !== null) && <Devices deviceList={data} updateAppData={updateAppData}/>
         } />
       </div>
     </BrowserRouter>

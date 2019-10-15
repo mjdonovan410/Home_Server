@@ -8,7 +8,7 @@ function TempWidget(props) {
     let classes;
     let temp = (props.sensor.temp != "#") ? parseInt(props.sensor.temp) : 90;
     let hueColor = -0.0000233100233099533*Math.pow(temp,4)+0.00403522403520387*Math.pow(temp,3)-0.0144133644112692*Math.pow(temp,2)-29.8168868169803*temp+1387.71173271325
-    hueColor = (hueColor>275) ? 275 : hueColor;
+    hueColor = (hueColor>300) ? 300 : (hueColor<0) ? 0 : hueColor; //Forces hue in range between 0 and 300
     let styleProps = {hueColor};
 
     const useStyles = createUseStyles({ 
