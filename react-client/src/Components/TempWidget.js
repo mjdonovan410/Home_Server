@@ -30,6 +30,8 @@ function TempWidget(props) {
             margin: '0',
         },
         tempRainDrop:{
+            height:'50px', 
+            width:'35px',
             position: 'absolute',
             bottom: '-8px',
             right: '-10px',
@@ -51,7 +53,7 @@ function TempWidget(props) {
         },
         tempDetailsP:{
             margin: '0px',
-            placeSelf: 'center',
+            justifySelf: 'center',
         },
         tempLoading:{
             placeSelf: 'center',
@@ -80,13 +82,13 @@ function TempWidget(props) {
             <div className='widgetCont' onClick={loadModal}>
                 <div className={classes.tempWidgetCircle}>
                     <p className={classes.tempNum}>{props.sensor.temp}</p>
-                    <div className={classes.tempRainDrop} style={{backgroundImage:"url('./images/raindrop.png')", height:'50px', width:'35px'}}>
+                    <div className={classes.tempRainDrop}>
                         <p className={classes.tempRainDropP}>{props.sensor.humid}</p>
                     </div>
                 </div>
                 <div className={classes.tempDetails}>
-                    <p className={classes.tempDetailsP} style={{fontSize:"24px", fontWeight:"bold"}}>{ props.sensor.name }</p>
-                    <p className={classes.tempDetailsP} style={{fontSize:"18px"}}>{ props.sensor.ipAddress }</p>
+                    <p className={classes.tempDetailsP} style={{fontSize:"24px", fontWeight:"bold", alignSelf: 'end'}}>{ props.sensor.name }</p>
+                    <p className={classes.tempDetailsP} style={{fontSize:"18px", alignSelf: 'start'}}>{ props.sensor.ipAddress }</p>
                 </div>
                 <p className={classes.tempUpdated}>Last Updated: { props.sensor.updated }</p>
             </div>

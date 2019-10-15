@@ -94,7 +94,7 @@ function LEDModalContent() {
         setLight(document.getElementById("lightness").value)
         setColor("hsl("+hueVal+",100%,"+lightVal+"%)")
         let [r,g,b] = hsl2rgb(hueVal,100,lightVal)
-        console.log(r+":"+g+":"+b)
+        //console.log(r+":"+g+":"+b)
     }
 
     classes = useStyles(styleProps);

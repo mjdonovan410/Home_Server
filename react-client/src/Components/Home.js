@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import TempWidget from './TempWidget'
+import LEDWidget from './LEDWidget'
 
 function Home(props) {
     const [deviceData, setData] = useState(null);
@@ -10,7 +11,9 @@ function Home(props) {
             if(device.showOnHome){
                 if(device.deviceType === "Temperature")
                     return <TempWidget sensor={device} key={device.id}/>;
-                else   
+                else if(device.deviceType === "LED") 
+                    return <LEDWidget sensor={device} key={device.id}/>;
+                else
                     return <div></div>
             }
         })
