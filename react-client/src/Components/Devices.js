@@ -44,7 +44,7 @@ function Devices(props) {
         <div align="center">
             {(data!=null) && <DeviceTable deviceList={data} updateAppData={props.updateAppData}/>}
             <span onClick={loadModal} className={classes.altButton}>Add Device</span>
-            {modal && <ModalTemplate deleteModal={deleteModal} content={<AddDeviceModal/>}/>}
+            {modal && <ModalTemplate deleteModal={deleteModal} content={<AddDeviceModal deviceList={data}/>}/>}
         </div>
     );
 }

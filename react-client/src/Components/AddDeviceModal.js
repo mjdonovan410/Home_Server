@@ -30,10 +30,12 @@ function TempModalContent(props) {
         },
         inputTextLabelName:{
             extend: 'inputTextLabel',
+            color: styleProps => (styleProps.nameValidated.valid) ? 'black' : 'red',
             opacity: styleProps => (styleProps.nameValidated.nameInput !== '') ? 1 : 0,
         },
         inputTextLabelIP:{
             extend: 'inputTextLabel',
+            color: styleProps => (styleProps.ipValidated.valid) ? 'black' : 'red',
             opacity: styleProps => (styleProps.ipValidated.ipInput !== '') ? 1 : 0,
         },
         inputText:{
@@ -44,13 +46,21 @@ function TempModalContent(props) {
 
     function typeHandler(e){
         let valid = false;
+        let nameUsed = false;
         if(e.target.placeholder === 'Device Name'){
-            if(e.target.value !== '')
+            props.deviceList.map(device =>{
+                if(device.name.toUpperCase() === e.target.value.toUpperCase())
+                    nameUsed = true;
+            });
+
+            if(e.target.value !== '' && !nameUsed)
                 valid = true;
+            
             setNameValidated({'nameInput':e.target.value,'valid':valid});
         }else if(e.target.placeholder === 'IP Address'){
-            if(e.target.value !== '')
+            if(/^(?!0)(?!.*\.$)((1?\d?\d|25[0-5]|2[0-4]\d)(\.|$)){4}$/.test(e.target.value)) //Checks for a valid IP address
                 valid = true;
+            
             setIPValidated({'ipInput':e.target.value,'valid':valid});
         }
     }
