@@ -3,10 +3,11 @@ import {createUseStyles} from 'react-jss'
 
 function LEDModalContent() {
     let classes;
-    const [sqColor, setColor] = useState("#FF0000");
+    const [hexColor, setHEXColor] = useState("#FF0000");
+    const [rgbColor, setRGBColor] = useState({'red':255,'green':255,'blue':255});
     const [hueVal, setHue] = useState(0);
     const [lightVal, setLight] = useState(50);
-    let styleProps = {lightVal, hueVal, sqColor};
+    let styleProps = {lightVal, hueVal, hexColor};
     
     const useStyles = createUseStyles({
         slider:{
@@ -59,8 +60,9 @@ function LEDModalContent() {
               gridArea: 'center',
         },
         rgbHex:{
-            gridArea: 'label', 
             width: '100%', 
+            justifySelf: 'center',
+            alignSelf: 'end',
             backgroundColor: 'black', 
             color: 'white',
             fontFamily: 'Arial, Helvetica, sans-serif',
@@ -71,10 +73,8 @@ function LEDModalContent() {
             width: '100px',
             border: '1px solid black',
             marginBottom: '20px',
-            backgroundColor: styleProps => styleProps.sqColor,
+            backgroundColor: styleProps => styleProps.hexColor,
             display: 'grid',
-            gridTemplateRows: '1fr auto', 
-            gridTemplateAreas: 'color label',
         },
     })
 
@@ -86,15 +86,21 @@ function LEDModalContent() {
         let m = (l/100)-(c/2)
         let rgbPrimes = [[c,x,0],[x,c,0],[0,c,x],[0,x,c],[x,0,c],[c,0,x]];
         let rgbPrime = rgbPrimes[Math.floor(h/60)]
-        return [Math.floor((rgbPrime[0]+m)*255),Math.floor((rgbPrime[1]+m)*255),Math.floor((rgbPrime[2]+m)*255)]
+        let [red,green,blue] = [Math.floor((rgbPrime[0]+m)*255),Math.floor((rgbPrime[1]+m)*255),Math.floor((rgbPrime[2]+m)*255)];
+        return [red < 0 ? 0 : red, green < 0 ? 0 : green, blue < 0 ? 0 : blue] //Prevents negative numbers
+    }
+
+    function dec2hex(number){
+        number = number < 0 ? 0xFF+number+1 : number;
+        return number < 16 ? "0"+number.toString(16).toUpperCase() : number.toString(16).toUpperCase();
     }
 
     function sliderMoved(e){
         setHue(document.getElementById("hue").value)
         setLight(document.getElementById("lightness").value)
-        setColor("hsl("+hueVal+",100%,"+lightVal+"%)")
         let [r,g,b] = hsl2rgb(hueVal,100,lightVal)
-        //console.log(r+":"+g+":"+b)
+        setHEXColor("#"+dec2hex(r)+dec2hex(g)+dec2hex(b))
+        setRGBColor({'red':r, 'green':g, 'blue':b})
     }
 
     classes = useStyles(styleProps);
@@ -102,7 +108,7 @@ function LEDModalContent() {
         <div className={classes.outerContainer}>
 		    <div className={classes.innerContainer} align='center'>
                 <div className={classes.square}>
-                    <span className={classes.rgbHex}>{sqColor}</span>
+                    <span className={classes.rgbHex}>{hexColor}</span>
                 </div>
                 <input type='range' defaultValue="0" id='hue' min='0' max='359' step='1' onChange={sliderMoved} className={classes.hueSlider}></input>
                 <input type='range' defaultValue="50" id='lightness' min='0' max='100' step='1' onChange={sliderMoved} className={classes.lightSlider}></input>

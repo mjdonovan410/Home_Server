@@ -7,7 +7,6 @@ function LEDWidget(props) {
     const [ledModal, setModal] = useState(false);
     let classes;
     let ledColor = props.sensor.color;
-    console.log(ledColor)
     let styleProps = {ledColor};
 
     const useStyles = createUseStyles({ 
