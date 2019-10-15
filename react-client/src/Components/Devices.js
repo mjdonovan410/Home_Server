@@ -20,6 +20,7 @@ function Devices(props) {
             color: 'white',
             cursor: 'pointer',
             marginTop: '30px',
+            width: '100px',
             transition: 'color .25s',
             '&:hover':{
                 color: 'rgb(0, 195, 255)',
@@ -43,7 +44,7 @@ function Devices(props) {
     return (
         <div align="center">
             {(data!=null) && <DeviceTable deviceList={data} updateAppData={props.updateAppData}/>}
-            <span onClick={loadModal} className={classes.altButton}>Add Device</span>
+            <div onClick={loadModal} className={classes.altButton}>Add Device</div>
             {modal && <ModalTemplate deleteModal={deleteModal} content={<AddDeviceModal deviceList={data}/>}/>}
         </div>
     );
