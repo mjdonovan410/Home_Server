@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 
-function TempModalContent(props) {
+function TemperatureModal(props) {
     const [deviceData, setData] = useState({"name":props.sensor.name, "temp":"#", "humid":"", "ipAddress":props.sensor.ipAddress});
 
     useEffect(() => {
@@ -16,4 +16,4 @@ function TempModalContent(props) {
     );
 }
 
-export default TempModalContent;
+export default TemperatureModal;

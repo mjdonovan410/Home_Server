@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {createUseStyles} from 'react-jss'
 import DeviceTable from "./DeviceTable"
 import ModalTemplate from "./ModalTemplate"
-import LEDModalContent from "./LEDModalContent"
+import AddDeviceModal from "./AddDeviceModal"
 
 function Devices(props) {
     const [data, setData] = useState(null);
@@ -44,7 +44,7 @@ function Devices(props) {
         <div align="center">
             {(data!=null) && <DeviceTable deviceList={data} updateAppData={props.updateAppData}/>}
             <span onClick={loadModal} className={classes.altButton}>Add Device</span>
-            {modal && <ModalTemplate deleteModal={deleteModal} content={<LEDModalContent/>}/>}
+            {modal && <ModalTemplate deleteModal={deleteModal} content={<AddDeviceModal/>}/>}
         </div>
     );
 }

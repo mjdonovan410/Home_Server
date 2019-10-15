@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {createUseStyles} from 'react-jss'
 import ModalTemplate from "./ModalTemplate"
-import TempModalContent from "./TempModalContent"
+import TemperatureModal from "./TemperatureModal"
 
 function TempWidget(props) {
     const [tempModal, setModal] = useState(false);
@@ -78,7 +78,7 @@ function TempWidget(props) {
     classes = useStyles(styleProps);
     return (
         <div>
-            {tempModal && <ModalTemplate deleteModal={deleteModal} content={<TempModalContent sensor={props.sensor}/>}/>}
+            {tempModal && <ModalTemplate deleteModal={deleteModal} content={<TemperatureModal sensor={props.sensor}/>}/>}
             <div className='widgetCont' onClick={loadModal}>
                 <div className={classes.tempWidgetCircle}>
                     <p className={classes.tempNum}>{props.sensor.temp}</p>
