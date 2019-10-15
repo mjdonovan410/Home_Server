@@ -2,9 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {createUseStyles} from 'react-jss'
 
 function TempModalContent(props) {
-    const [deviceData, setData] = useState();
-    const [nameValidated, setNameValidated] = useState("");
-    const [ipValidated, setIPValidated] = useState("");
+    const [nameValidated, setNameValidated] = useState({'nameInput':'','valid':false});
+    const [ipValidated, setIPValidated] = useState({'ipInput':'','valid':false});
     let classes;
     let styleProps = {ipValidated, nameValidated};
 
@@ -31,11 +30,11 @@ function TempModalContent(props) {
         },
         inputTextLabelName:{
             extend: 'inputTextLabel',
-            opacity: styleProps => (styleProps.nameValidated !== '') ? 1 : 0,
+            opacity: styleProps => (styleProps.nameValidated.nameInput !== '') ? 1 : 0,
         },
         inputTextLabelIP:{
             extend: 'inputTextLabel',
-            opacity: styleProps => (styleProps.ipValidated !== '') ? 1 : 0,
+            opacity: styleProps => (styleProps.ipValidated.ipInput !== '') ? 1 : 0,
         },
         inputText:{
             fontSize: '20px',
@@ -44,10 +43,15 @@ function TempModalContent(props) {
     })
 
     function typeHandler(e){
+        let valid = false;
         if(e.target.placeholder === 'Device Name'){
-            setNameValidated(e.target.value);
+            if(e.target.value !== '')
+                valid = true;
+            setNameValidated({'nameInput':e.target.value,'valid':valid});
         }else if(e.target.placeholder === 'IP Address'){
-            setIPValidated(e.target.value);
+            if(e.target.value !== '')
+                valid = true;
+            setIPValidated({'ipInput':e.target.value,'valid':valid});
         }
     }
 
