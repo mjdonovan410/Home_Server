@@ -37,6 +37,12 @@ function Devices(props) {
         setModal(false)
     }
 
+    const updateDeviceData = (newData) =>{
+        console.log(newData)
+        props.updateAppData()
+        setData(newData)
+    }
+
     useEffect(()=>{
         setData(props.deviceList.slice());
     }, []);
@@ -45,7 +51,7 @@ function Devices(props) {
         <div align="center">
             {(data!=null) && <DeviceTable deviceList={data} updateAppData={props.updateAppData}/>}
             <div onClick={loadModal} className={classes.altButton}>Add Device</div>
-            {modal && <ModalTemplate deleteModal={deleteModal} content={<AddDeviceModal deviceList={data}/>}/>}
+            {modal && <ModalTemplate deleteModal={deleteModal} content={<AddDeviceModal deviceList={data} deleteModal={deleteModal} updateDeviceData={updateDeviceData}/>}/>}
         </div>
     );
 }
