@@ -72,7 +72,10 @@ function DeviceTable(props) {
         let diff = data !== newData;
         newData.sort(function(a, b) {
             return a.order - b.order;
-        });
+        })
+
+        console.log(newData)
+        
         setData(newData);
         if(diff){
             props.updateAppData(newData);

@@ -1,13 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import {createUseStyles} from 'react-jss'
 
-function LEDModalContent() {
+function LEDModalContent(props) {
     let classes;
     const [hexColor, setHEXColor] = useState("#FF0000");
     const [rgbColor, setRGBColor] = useState({'red':255,'green':255,'blue':255});
     const [hueVal, setHue] = useState(0);
+    const [liveUpdate, setLiveUpdate] = useState(false);
     const [lightVal, setLight] = useState(50);
+    const [res, setResponse] = useState(true);
     let styleProps = {lightVal, hueVal, hexColor};
+    let error = '';
     
     const useStyles = createUseStyles({
         slider:{
@@ -95,12 +98,38 @@ function LEDModalContent() {
         return number < 16 ? "0"+number.toString(16).toUpperCase() : number.toString(16).toUpperCase();
     }
 
-    function sliderMoved(e){
+    function sliderHandler(e){
         setHue(document.getElementById("hue").value)
         setLight(document.getElementById("lightness").value)
         let [r,g,b] = hsl2rgb(hueVal,100,lightVal)
         setHEXColor("#"+dec2hex(r)+dec2hex(g)+dec2hex(b))
         setRGBColor({'red':r, 'green':g, 'blue':b})
+        
+        if(liveUpdate && res)
+            postColorChange()
+    }
+
+    function liveUpdateHandler(e){
+        if(e.target.checked)
+            setLiveUpdate(true)
+        else
+            setLiveUpdate(false)
+    }
+
+    function postColorChange(){
+        setResponse(false)
+        fetch('http://'+props.sensor.ipAddress+'/led_strip?power=on&r='+rgbColor.red+'&g='+rgbColor.green+'&b='+rgbColor.blue, {
+            method: 'POST',
+            body: JSON.stringify(rgbColor),
+        })
+        .then(()=>{
+            setResponse(true)
+        })
+        .catch((err)=> {
+            setResponse(true)
+            error = err
+            console.log(error)
+        })
     }
 
     classes = useStyles(styleProps);
@@ -110,10 +139,12 @@ function LEDModalContent() {
                 <div className={classes.square}>
                     <span className={classes.rgbHex}>{hexColor}</span>
                 </div>
-                <input type='range' defaultValue="0" id='hue' min='0' max='359' step='1' onChange={sliderMoved} className={classes.hueSlider}></input>
-                <input type='range' defaultValue="50" id='lightness' min='0' max='100' step='1' onChange={sliderMoved} className={classes.lightSlider}></input>
-                
+                <input type='range' defaultValue="0" id='hue' min='0' max='359' step='1' onChange={sliderHandler} className={classes.hueSlider}></input>
+                <input type='range' defaultValue="50" id='lightness' min='0' max='100' step='1' onChange={sliderHandler} className={classes.lightSlider}></input>
+                <label><input type='checkbox' id='liveUpdate' onChange={liveUpdateHandler}/>Live Update</label>
+
                 {/* <div id='submitButton' className='altButton' style='width:150px;'>SUBMIT</div> */}
+                <br/><p>{error}</p>
             </div>
         </div>
     );

@@ -6,6 +6,7 @@ var logger = require('morgan');
 var cors = require('cors');
 var fs = require('fs');
 let fetch = require('node-fetch');
+const { pool } = require('./db_config');
 
 var indexRouter = require('./routes/index');
 var devicesRouter = require('./routes/devices');
@@ -42,9 +43,19 @@ app.use(function(err, req, res, next) {
     res.render('error');
 });
 
+
+function zeroPad(d) {
+    return ("0" + d).slice(-2)
+}
+
+function pgFormatDate(){
+    var parsed = new Date();
+    return new Date().toISOString().slice(0, 19).replace('T', ' ');
+}
+
 function getTime(){
-    var today = new Date();
-    return ((today.getHours() < 10)?"0":"") + today.getHours() +":"+ ((today.getMinutes() < 10)?"0":"") + today.getMinutes() +":"+ ((today.getSeconds() < 10)?"0":"") + today.getSeconds();
+    var parsed = new Date();
+    return [zeroPad(parsed.getHours()), zeroPad(parsed.getMinutes()), zeroPad(parsed.getSeconds())].join(" ");
 }
 
 let today = new Date();
@@ -70,6 +81,7 @@ function grabDataFromDevices(){
                             device.temp = resJSON.temperature;
                             device.humid = resJSON.humidity;
                             device.updated = getTime();
+                            addTemp(device.name, device.temp, device.humid, device.id)
                         }
                         deviceList.push(device)
                     })
@@ -88,6 +100,10 @@ function grabDataFromDevices(){
             })
             
             Promise.all(promises).then(()=>{
+                deviceList.sort(function(a, b) {
+                    return a.order - b.order;
+                })
+                
                 fs.writeFile('public/files/devices.json', JSON.stringify(deviceList), function(err) {
                     if(err=== null)
                         console.log('Updated Settings') 
@@ -109,5 +125,16 @@ setTimeout(()=>{
         grabDataFromDevices()
     }, refreshRate*60000)
 }, nextDataGrab)
+
+
+
+function addTemp(area, temp, humid, area_id){
+    pool.query('INSERT INTO temp_tracking(rec_dateTime, area, temp, humid, area_id) VALUES ($1, $2, $3, $4, $5)', [pgFormatDate(), area, temp, humid, area_id], error => {
+        if(error)
+            console.log(error)
+        else
+            console.log("Successfully update database")
+    })
+}
 
 module.exports = app;
