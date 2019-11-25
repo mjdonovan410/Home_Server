@@ -14,11 +14,11 @@ function Home(props) {
                 else if(device.deviceType === "LED") 
                     return <LEDWidget sensor={device} key={device.id}/>;
                 else
-                    return <div></div>
+                    return null
             }
         })
         setData(devices)
-    }, []);    
+    }, [props.deviceList]);    
     
     return (
         <div className='homeCont'>
