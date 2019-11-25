@@ -7,17 +7,27 @@ import NavBar from './Components/NavBar'
 
 function App() {  
   const [data, setData] = useState(null);
-  
-  useEffect(()=>{
+  const refreshRate = 0.5;
+
+  const refreshData = () => {
+    console.log('Update device data from server')
     fetch('http://'+window.location.hostname+':9000/devices')
     .then(res => res.json())
     .then(setData);
+  }
+
+  useEffect(()=>{
+    refreshData()
   }, []);
 
   function updateAppData(newData){
     setData(newData);
   }
   
+  setInterval(()=>{
+    refreshData()
+  }, refreshRate*60000)
+
   return (
     <BrowserRouter>
       <div className="App">
