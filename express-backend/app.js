@@ -59,7 +59,7 @@ function getTime(){
 }
 
 let today = new Date();
-let refreshRate = 1 //in minutes
+let refreshRate = 5 //in minutes
 let nextDataGrab = (refreshRate - today.getMinutes()%refreshRate)*60000 - (today.getSeconds()*1000);
 //console.log(today.getMinutes()%refreshRate +":"+ today.getSeconds())
 //console.log("Next update in " + (refreshRate-(today.getMinutes()%refreshRate)-1) + ":"+ (60 - today.getSeconds()))

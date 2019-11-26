@@ -1,20 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
+import {useRoutes} from 'hookrouter'
+import * as serviceWorker from './serviceWorker';
 import './Stylesheets/index.css';
 import './Stylesheets/home.css';
-import * as serviceWorker from './serviceWorker';
-
-import { useState, useEffect } from 'react';
 import Devices from './Components/Devices'
 import Home from './Components/Home'
 import NavBar from './Components/NavBar'
-import {useRoutes} from 'hookrouter'
-
 
 function App() {  
   const [data, setData] = useState(null);
   const [trigger, setTrigger] = useState(1);
-  const refreshRate = 0.5;
+  const refreshRate = 5;
 
   function refreshData(){
     if(trigger === 1){
@@ -34,8 +31,6 @@ function App() {
   function updateAppData(newData){
     setData(newData);
   }
-  
-  
 
   const routes = {
     "/": () => <Home deviceList={data}/>,
