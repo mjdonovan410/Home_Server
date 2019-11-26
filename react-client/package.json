@@ -4,12 +4,12 @@
   "private": true,
   "proxy": "http://localhost:9000/",
   "dependencies": {
+    "hookrouter": "^1.2.3",
     "jss-extend": "^6.2.0",
     "localforage": "^1.7.3",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-jss": "^10.0.0",
-    "react-router-dom": "^5.0.1",
     "react-scripts": "3.1.1",
     "yarn": "^1.19.0"
   },

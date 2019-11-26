@@ -2,8 +2,54 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './Stylesheets/index.css';
 import './Stylesheets/home.css';
-import App from './App';
 import * as serviceWorker from './serviceWorker';
+
+import { useState, useEffect } from 'react';
+import Devices from './Components/Devices'
+import Home from './Components/Home'
+import NavBar from './Components/NavBar'
+import {useRoutes} from 'hookrouter'
+
+
+function App() {  
+  const [data, setData] = useState(null);
+  const [trigger, setTrigger] = useState(1);
+  const refreshRate = 0.5;
+
+  function refreshData(){
+    if(trigger === 1){
+        console.log('Update device data from server')
+        fetch('http://'+window.location.hostname+':9000/devices')
+        .then(res => res.json())
+        .then(setData);
+        setTrigger(0)
+    }
+  }
+
+  useEffect(()=>{
+    refreshData()
+    setInterval(refreshData, refreshRate*60000)
+  }, []);
+
+  function updateAppData(newData){
+    setData(newData);
+  }
+  
+  
+
+  const routes = {
+    "/": () => <Home deviceList={data}/>,
+    "/devices": () => <Devices deviceList={data} updateAppData={updateAppData}/>
+  };
+
+  const routeResult = useRoutes(routes);
+  return (
+      <div className="App">
+        <NavBar />
+        {(data!=null) && routeResult}
+      </div>
+  );
+}
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

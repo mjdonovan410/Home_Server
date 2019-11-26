@@ -22,7 +22,7 @@ function Home(props) {
     
     return (
         <div className='homeCont'>
-            { deviceData }
+            { deviceData } 
         </div>
     );
 }

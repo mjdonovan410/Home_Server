@@ -1,5 +1,4 @@
 import React from 'react';
-import {NavLink} from 'react-router-dom'
 import {createUseStyles} from 'react-jss'
 
 function NavBar(){
@@ -42,9 +41,9 @@ function NavBar(){
         <div className={classes.headerBar}>
             <div className={classes.navCont}>
                 <img src='./images/logo.png' alt='logo' height='48px' width='112px'/>
-                <NavLink exact to="/" className={classes.navObj}>Home</NavLink>
-                <NavLink to="/devices" className={classes.navObj}>Devices</NavLink>
-                <NavLink to="/settings" className={classes.navObj}>Settings</NavLink>
+                <a href="/" className={classes.navObj}>Home</a>
+                <a href="/devices" className={classes.navObj}>Devices</a>
+                <a href="/settings" className={classes.navObj}>Settings</a>
             </div>
         </div>
     );
