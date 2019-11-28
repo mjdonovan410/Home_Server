@@ -4,10 +4,12 @@
   "private": true,
   "proxy": "http://localhost:9000/",
   "dependencies": {
+    "chart.js": "^2.9.3",
     "hookrouter": "^1.2.3",
     "jss-extend": "^6.2.0",
     "localforage": "^1.7.3",
     "react": "^16.9.0",
+    "react-chartjs-2": "^2.8.0",
     "react-dom": "^16.9.0",
     "react-jss": "^10.0.0",
     "react-scripts": "3.1.1",

@@ -78,7 +78,7 @@ function TempWidget(props) {
     classes = useStyles(styleProps);
     return (
         <div>
-            {tempModal && <ModalTemplate deleteModal={deleteModal} content={<TemperatureModal sensor={props.sensor}/>}/>}
+            {tempModal && <ModalTemplate deleteModal={deleteModal} content={<TemperatureModal sensor={props.sensor} styleProps={styleProps} />}/>}
             <div className='widgetCont' onClick={loadModal}>
                 <div className={classes.tempWidgetCircle}>
                     <p className={classes.tempNum}>{props.sensor.temp}</p>
