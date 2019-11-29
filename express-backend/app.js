@@ -10,6 +10,7 @@ const { pool } = require('./db_config');
 
 var indexRouter = require('./routes/index');
 var devicesRouter = require('./routes/devices');
+var historyRouter = require('./routes/history');
 
 var app = express();
 
@@ -25,6 +26,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/', historyRouter);
 app.use('/', devicesRouter);
 
 // catch 404 and forward to error handler

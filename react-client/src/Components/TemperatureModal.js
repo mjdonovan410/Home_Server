@@ -4,7 +4,7 @@ import {createUseStyles} from 'react-jss'
 
 function TemperatureModal(props) {
     let classes;
-    const [deviceData, setData] = useState({"name":props.sensor.name, "temp":"#", "humid":"", "ipAddress":props.sensor.ipAddress});
+    const [deviceData, setData] = useState({"name":props.sensor.name, "temp":props.sensor.temp, "humid":props.sensor.humid, "ipAddress":props.sensor.ipAddress});
     let styleProps = props.styleProps
     
     const useStyles = createUseStyles({
@@ -12,7 +12,7 @@ function TemperatureModal(props) {
             fontSize: "36px",
             fontWeight: "bold",
             fontFamily: "Marvel",
-            margin: "50px 0px 0px 0px",
+            margin: "0px",
         },
         ipAddress:{
             fontSize: "24px",
@@ -20,8 +20,8 @@ function TemperatureModal(props) {
             margin: "5px 0px 20px 0px",
         },
         tempWidgetCircle:{
-            height: '200px',
-            width: '200px',
+            height: '120px',
+            width: '120px',
             borderRadius: '50%',
             alignSelf: 'center',
             justifySelf: 'left',
@@ -29,19 +29,20 @@ function TemperatureModal(props) {
             color: '#20232A',
             display: 'grid',
             position: 'relative',
-            border: styleProps => '10px solid hsl('+styleProps.hueColor+',100%,50%)',
+            border: styleProps => '6px solid hsl('+styleProps.hueColor+',100%,50%)',
         },
         tempNum:{
             placeSelf: 'center',
-            fontSize: '96px',
+            fontSize: '60px',
+            fontFamily: "Marvel",
             margin: '0',
         },
         tempRainDrop:{
-            height:'100px', 
-            width:'70px',
+            height: '65px', 
+            width: '48px',
             position: 'absolute',
-            bottom: '-16px',
-            right: '-20px',
+            bottom: '-12px',
+            right: '-16px',
             display: 'grid',
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'contain',
@@ -50,8 +51,9 @@ function TemperatureModal(props) {
         },
         tempRainDropP:{
             placeSelf: 'center',
-            fontSize: '36px',
-            margin: '20px auto 0px auto', 
+            fontSize: '32px',
+            fontFamily: "Marvel",
+            margin: '15px auto 0px auto', 
             color: 'white',
         },
         chartDiv:{
@@ -67,32 +69,45 @@ function TemperatureModal(props) {
         labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
         datasets: [
           {
-            label: 'Test Dataset',
+            label: 'Temperature',
             fill: false,
             lineTension: 0.1,
-            backgroundColor: 'rgba(75,192,192,0.4)',
-            borderColor: 'rgba(75,192,192,1)',
-            borderCapStyle: 'butt',
-            borderDash: [],
-            borderDashOffset: 0.0,
-            borderJoinStyle: 'miter',
+            backgroundColor: 'white',
+            borderColor: 'rgb(247,155,79)',
+            pointBorderColor: 'rgb(247,155,79)',
+            pointBackgroundColor: '#fff',
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: 'rgb(247,155,79)',
+            pointHoverBorderColor: 'rgba(191,91,9,1)',
+            pointHoverBorderWidth: 2,
+            pointRadius: 2,
+            pointHitRadius: 10,
+            data: [70, 72, 69, 71, 70, 70, 71]
+          },
+          {
+            label: 'Humidity',
+            fill: false,
+            lineTension: 0.1,
+            backgroundColor: 'white',
+            borderColor: 'rgb(110,187,208)',
             pointBorderColor: 'rgba(75,192,192,1)',
             pointBackgroundColor: '#fff',
             pointBorderWidth: 1,
             pointHoverRadius: 5,
             pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-            pointHoverBorderColor: 'rgba(220,220,220,1)',
+            pointHoverBorderColor: 'rgba(34,89,104,1)',
             pointHoverBorderWidth: 2,
-            pointRadius: 1,
+            pointRadius: 2,
             pointHitRadius: 10,
-            data: [65, 59, 80, 81, 56, 55, 40]
+            data: [33, 30, 36, 32, 34, 31, 29]
           }
         ]
       };
 
     classes = useStyles(styleProps);
     return (
-        <div align="center">
+        <div style={{alignSelf:"center"}} align="center">
             <p className={classes.deviceName}>{deviceData.name}</p>
             <p className={classes.ipAddress}>{deviceData.ipAddress}</p>
             
